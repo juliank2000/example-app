@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::orderBy('id','desc')->paginate(10);
-        return view('Users.index',$data);
+        $data['users'] = User::orderBy('id', 'desc')->paginate(10);
+        return view('Users.index', $data);
         // "hola desde el controlador";
     }
 
@@ -27,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('Users.create');
     }
 
     /**
@@ -38,8 +39,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'primer_nombre'    => 'required',
+            'segundo_nombre'   => 'required',
+            'primer_apellido'  => 'required',
+            'segundo_apellido' => 'required',
+            'email'            => 'required|unique:users',
+            'password'         => 'required',
+           
+        ]);
+        $users = new User();
+        $users->primer_nombre = $request->primer_nombre;
+        $users->segundo_nombre = $request->email;
+        $users->primer_apellido = $request->primer_apellido;
+        $users->segundo_apellido = $request->segundo_apellido;
+        $users->email = $request->email;
+        $users->password = Hash::make($request->password);
+        $users->save();
+        return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente.');
     }
+
 
     /**
      * Display the specified resource.
@@ -83,6 +102,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        $user->delete($id);
+        return redirect()->route('usuarios.index')->with('success', 'se elimino con exito');
     }
 }
