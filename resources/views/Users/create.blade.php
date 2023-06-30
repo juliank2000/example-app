@@ -16,7 +16,7 @@
                     <h2>VER USUARIOS</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('usuarios.index') }}"> Back</a>
+                    <a class="btn btn-primary" href="{{ route('usuarios.index') }}">Volver</a>
                 </div>
             </div>
         </div>

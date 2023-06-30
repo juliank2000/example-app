@@ -49,12 +49,12 @@ class UserController extends Controller
            
         ]);
         $users = new User();
-        $users->primer_nombre = $request->primer_nombre;
-        $users->segundo_nombre = $request->email;
-        $users->primer_apellido = $request->primer_apellido;
+        $users->primer_nombre    = $request->primer_nombre;
+        $users->segundo_nombre   = $request->segundo_nombre;
+        $users->primer_apellido  = $request->primer_apellido;
         $users->segundo_apellido = $request->segundo_apellido;
-        $users->email = $request->email;
-        $users->password = Hash::make($request->password);
+        $users->email            = $request->email;
+        $users->password         = Hash::make($request->password);
         $users->save();
         return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -68,7 +68,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        // $user = User::find($id);
+        // return view('usuarios.show',compact('user'));
     }
 
     /**
@@ -79,7 +80,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return view('Users.edit', compact('user'));
+        
     }
 
     /**
@@ -91,7 +94,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
+            
+            $request->validate([
+                'primer_nombre'    => 'required',
+                'segundo_nombre'   => 'required',
+                'primer_apellido'  => 'required',
+                'segundo_apellido' => 'required',
+                
+               
+            ]);
+            $users = User::find($id);
+            $users->primer_nombre    = $request->primer_nombre;
+            $users->segundo_nombre   = $request->segundo_nombre;
+            $users->primer_apellido  = $request->primer_apellido;
+            $users->segundo_apellido = $request->segundo_apellido;
+            $users->save();
+            return redirect()->route('usuarios.index')->with('success', 'Usuario editado correctamente.');
     }
 
     /**
